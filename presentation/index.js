@@ -16,6 +16,9 @@ import {
   Text
 } from "spectacle";
 
+import Lottie from "react-lottie";
+import * as animationData from "../assets/snoopy.json";
+
 // Import theme
 import createTheme from "spectacle/lib/themes/default";
 
@@ -40,6 +43,59 @@ const theme = createTheme(
   }
 );
 
+class LottieControl extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { isStopped: false, isPaused: false };
+  }
+
+  render() {
+    const buttonStyle = {
+      display: "block",
+      margin: "10px auto"
+    };
+
+    const defaultOptions = {
+      loop: true,
+      autoplay: true,
+      animationData: require("../assets/snoopy.json"),
+      rendererSettings: {
+        preserveAspectRatio: "xMidYMid slice"
+      }
+    };
+
+    return (
+      <div>
+        <Lottie
+          options={defaultOptions}
+          height={400}
+          width={'100%'}
+          isStopped={this.state.isStopped}
+          isPaused={this.state.isPaused}
+        />
+        <button
+          style={buttonStyle}
+          onClick={() => this.setState({ isStopped: true })}
+        >
+          stop
+        </button>
+        <button
+          style={buttonStyle}
+          onClick={() => this.setState({ isStopped: false })}
+        >
+          play
+        </button>
+        <button
+          style={buttonStyle}
+          onClick={() => this.setState({ isPaused: !this.state.isPaused })}
+        >
+          pause
+        </button>
+      </div>
+    );
+  }
+}
+
 export default class Presentation extends React.Component {
   render() {
     return (
@@ -63,6 +119,9 @@ export default class Presentation extends React.Component {
           <Heading size={1} textColor="secondary">
             Lottie Animations
           </Heading>
+          <div>
+            <LottieControl />
+          </div>
         </Slide>
         <Slide transition={["fade"]} bgColor="primary" textColor="tertiary">
           <Heading size={6} textColor="secondary" caps>
@@ -75,7 +134,11 @@ export default class Presentation extends React.Component {
             <ListItem>Item 4</ListItem>
           </List>
         </Slide>
-        <Slide transition={["fade"]} bgColor="secondary" textColor="primary">
+        <Slide
+          transition={["fade"]}
+          bgColor="secondary"
+          textColor="primary"
+        >
           <BlockQuote>
             <Quote>Example Quote</Quote>
             <Cite margin="10px 0 0 30px">Author</Cite>
